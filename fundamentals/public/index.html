@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTMX</title>
+    <script
+      src="https://unpkg.com/htmx.org@2.0.0"
+      integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw"
+      crossorigin="anonymous"
+    ></script>
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <h1>HTMX</h1>
+
+    <!-- hx-get = trazer os dados do backend - GET - -->
+    <!-- hx-trigger = tipo de evento -->
+    <!-- hx-target = local de despejo -->
+    <button hx-get="/carregar-conteudo" hx-target="#conteudo-get">
+      Carregar conteúdo
+    </button>
+    <p hx-get="/carregar-conteudo" hx-trigger="click">Carregar conteúdo</p>
+    <div id="conteudo-get"></div>
+
+    <!-- hx-post = requisição POST -->
+    <!-- name = valor enviado para o backend -->
+    <!-- form = req.body.{} -->
+    <form
+      hx-post="/enviar-formulario"
+      hx-trigger="submit"
+      hx-target="#conteudo-post"
+    >
+      <label for="nome">Nome:</label>
+      <input type="text" name="nome" />
+      <button>Enviar</button>
+    </form>
+    <div id="conteudo-post"></div>
+
+    <!-- hx-swap = tenha mais precisão na substituição do html -->
+    <button
+      hx-get="/trocar-conteudo"
+      hx-target="#conteudo-swap"
+      hx-swap="outerHTML"
+    >
+      Carregar conteúdo
+    </button>
+    <div id="conteudo-swap"></div>
+  </body>
+
+  <!-- hx-vals = precisar enviar valores extra -->
+  <!-- adiciona mais valores ao req.body -->
+  <form
+    hx-post="/valores-adicionais"
+    hx-trigger="submit"
+    hx-target="#valores-adicionais"
+    hx-vals='{"valorExtra": "Este é um valor adicional??"}'
+  >
+    <label for="nome">Nome:</label>
+    <input type="text" name="nome" />
+    <button>Enviar</button>
+  </form>
+  <div id="valores-adicionais"></div>
+
+  <!-- polling = são requisições a cada x tempo no servidor -->
+  <div
+    hx-get="/tempo-servidor"
+    hx-trigger="every 5s"
+    hx-target="#tempo-servidor"
+  >
+    <p>Carregando hora do servidor...</p>
+    <div id="tempo-servidor"></div>
+  </div>
+
+  <!-- validações -->
+  <form
+    hx-post="/enviar-formulario-validacao"
+    hx-trigger="submit"
+    hx-target="#resultado"
+  >
+    <label for="username">Nome:</label>
+    <input type="text" name="username" id="username" required />
+    <div id="username-error"></div>
+    <button>Enviar</button>
+  </form>
+  <div id="resultado"></div>
+</html>
